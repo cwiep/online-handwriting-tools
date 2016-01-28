@@ -11,7 +11,7 @@ Python library and tool for calculating bag-of-features representations for onli
 * exampledata/ contains an exemplary online-handwritten trajectory (company_traj.txt) as well as some pre-calculated clusters (clusters.txt)
 
 ## Licence
-MIT
+Apache License, Version 2.0
 
 [//]: #
 
