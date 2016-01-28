@@ -14,7 +14,7 @@ class BoofGenerator():
         feat_mat = np.zeros(shape=(num_examples, num_features))
         i = 0
         for keyp, lab in zip(keypoints, labels):
-            feat_mat[i] = self.__build_feature_vector(keyp, lab)
+            feat_mat[i] = self.build_feature_vector(keyp, lab)
             i += 1
             log.update_progress(i+1, num_examples)
         print("")
@@ -26,4 +26,4 @@ class BoofGenerator():
         maxx = max(keypoints[:, 0])
         miny = min(keypoints[:, 1])
         maxy = max(keypoints[:, 1])
-        return self.spatial_pyramid.calculate_visual_descriptor(keypoints, labels, (minx, miny), maxx-minx, maxy-miny)
+        return self.spatial_pyramid.calculate_descriptor(keypoints, labels, (minx, miny), maxx-minx, maxy-miny)

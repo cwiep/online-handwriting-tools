@@ -170,18 +170,3 @@ def __context_bitmap(traj, point_idx, bin_size=10):
             num_points += 1
     return mathutils.normalize(np.array([p / float(num_points) for bin in bitmap for p in bin]))
 
-
-if __name__ == '__main__':
-    import time
-    import trajrender as trajtools
-    import trajnorm
-    times = []
-    a = None
-    for _ in range(10):
-        start = time.clock()
-        traj3 = trajtools.read_trajectory_from_file("/home/chris/Work/MA.data/gw_online/2770277/1426889626935_instructions.txt")[0]
-        traj3_n, delayed = trajnorm.normalize_trajectory(traj3, ["flip", "slope", "origin", "resample", "slant", "height", "smooth", "delayed"])
-        f = calculate_feature_vector_sequence(traj3_n, ["dir", "curv", "vic_aspect", "vic_curl", "vic_line", "vic_slope", "bitmap"])
-        elapsed = time.clock() - start
-        times.append(elapsed)
-    print("average: {}, min {}, max {}".format(np.average(times), np.min(times), np.max(times)))

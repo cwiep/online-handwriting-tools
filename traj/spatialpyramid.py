@@ -19,7 +19,7 @@ class SpatialPyramid():
     def descriptor_size(self):
         return self.num_total_bins() * self.num_centroids
 
-    def calculate_visual_descriptor_from_mat(self, desc_mat):
+    def calculate_descriptor_from_mat(self, desc_mat):
         """
         Calculates visual descriptor for given matrix of visual word labels by applying
         a spatial pyramid scheme and flattening and normalizing the resulting array.
@@ -57,7 +57,7 @@ class SpatialPyramid():
             spatial_pyramid.append(bins)
         return np.array(spatial_pyramid)
 
-    def calculate_visual_descriptor(self, keypoints, labels, origin, width, height):
+    def calculate_descriptor(self, keypoints, labels, origin, width, height):
         """
         Calculates visual descriptor for a given list of keypoints/visual words labels by applying
         a spatial pyramid scheme and flattening and normalizing the resulting array.

@@ -192,15 +192,3 @@ def normalize_trajectory(traj, args):
         return traj, delayed
     return traj
 
-if __name__ == '__main__':
-    import wordspotting.traj.trajrender as trajtools
-    import time
-    times = []
-    for i in range(1000):
-        start = time.clock()
-        traj3 = trajtools.read_trajectory_from_file("/home/chris/Work/MA.data/gw_online/2770277/1426889626935_instructions.txt")[0]
-        traj3_n = normalize_trajectory(traj3, ["flip", "slope", "origin", "resample", "slant", "height", "smooth", "delayed"])[0]
-        elapsed = time.clock() - start
-        times.append(elapsed)
-    print("average: {}, min {}, max {}".format(np.average(times), np.min(times), np.max(times)))
-    # vis.draw_trajectories([traj3_n], draw_reg=False)
