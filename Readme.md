@@ -2,6 +2,12 @@
 
 Python library and tool for calculating bag-of-features representations for online-handwritten trajectories. This project was designed to work with the [Online-Handwritten George Washington Dataset]. See there for more information about the expected trajectory file format.
 
+Run
+```
+python tool.py
+```
+for basic usage.
+
 ## Dependencies
 * numpy
 * scipy
