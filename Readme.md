@@ -16,6 +16,11 @@ for basic usage.
 * traj/ contains the online-handwritten trajectory library
 * exampledata/ contains an exemplary online-handwritten trajectory (company_traj.txt) as well as some pre-calculated clusters (clusters.txt)
 
+## TODO
+* support for different choices of normalization steps and features
+* documentation for output format
+* ? supporting batch calculations for multiple trajectories ?
+
 ## Licence
 Apache License, Version 2.0
 
