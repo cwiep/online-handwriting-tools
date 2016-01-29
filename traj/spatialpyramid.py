@@ -2,14 +2,17 @@ __author__ = 'chris'
 
 import numpy as np
 import os
-
 import matplotlib.image as mimg
-
 import mathutils
 
 
 class SpatialPyramid():
     def __init__(self, levels, num_centroids):
+        """
+        Creates Spatial Pyramid object for given parameters.
+        :param levels: list of bin configurations. examples: [ [2, 1] ] for one level and two bins splitting
+        the trajectory in left and right half. [ [2, 1], [1, 1] ] same as above but adding a second level without splitting.
+        """
         self.levels = levels
         self.num_centroids = num_centroids
 
@@ -21,17 +24,17 @@ class SpatialPyramid():
 
     def calculate_descriptor_from_mat(self, desc_mat):
         """
-        Calculates visual descriptor for given matrix of visual word labels by applying
+        Calculates descriptors for given matrix of quantized vector labels by applying
         a spatial pyramid scheme and flattening and normalizing the resulting array.
 
-        :return: One-dimensional array representing visual descriptor of the given matrix.
+        :return: One-dimensional array representing descriptor of the given matrix.
         """
         spatial_pyramid = self.__extract_spatial_pyramid_from_mat(desc_mat)
         return self.__pyramid_to_descriptor(spatial_pyramid)
 
     def __extract_spatial_pyramid_from_mat(self, desc_mat):
         """
-        Applies a spatial pyramid scheme to a given matrix of visual word labels.
+        Applies a spatial pyramid scheme to a given matrix of quantized vector labels.
 
         :return: An array of arrays containing each bin for each level of the spatial pyramid.
         """
@@ -59,13 +62,13 @@ class SpatialPyramid():
 
     def calculate_descriptor(self, keypoints, labels, origin, width, height):
         """
-        Calculates visual descriptor for a given list of keypoints/visual words labels by applying
+        Calculates descriptor for a given list of keypoints and quantized vector labels by applying
         a spatial pyramid scheme and flattening and normalizing the resulting array.
 
-        This is slower than calculate_visual_descriptor_from_mat!
+        This is slower than calculate_descriptor_from_mat!
 
         :param keypoints: Keypoints (with format [x,y]) for which labels are given.
-        :param labels: labels[i] contains the visual word label of the i-th keypoint.
+        :param labels: labels[i] contains the quantized vector label of the i-th keypoint.
         :param origin: Origin of the area that the spatial pyramid is calculated for (e.g. (0,0) for whole image).
         :param width: Width of the area the spatial pyramid is calculated for.
         :param height: Height of the area the spatial pyramid is calculated for.
@@ -76,7 +79,7 @@ class SpatialPyramid():
 
     def __extract_spatial_pyramid(self, keypoints, labels, origin, width, height):
         """
-        Applies a spatial pyramid scheme to a given set of keypoints/visual words.
+        Applies a spatial pyramid scheme to a given set of keypoints/quantized vector labels.
         """
         levels = len(self.levels)
         spatial_pyramid = []
@@ -98,9 +101,9 @@ class SpatialPyramid():
 
     def __pyramid_to_descriptor(self, descriptor_pyramid):
         """
-        Calculates visual descriptor by flattening the spatial bins in descriptor_pyramid.
+        Calculates descriptor by flattening the spatial bins in descriptor_pyramid.
 
-        :return: One-dimensional array representing visual descriptor of a word-snippet.
+        :return: One-dimensional array representing descriptor of a word-snippet.
         """
         flattened = []
         for index, level in enumerate(descriptor_pyramid):
