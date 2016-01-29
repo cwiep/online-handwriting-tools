@@ -1,10 +1,21 @@
 __author__ = 'chris'
 
+import math
 import numpy as np
 from scipy.stats import linregress
 from scipy.special import binom
-import math
 
+"""
+All normalization steps are based on the following two papers:
+
+Liwicki, M. ; Bunke, H.:  HMM-based on-line recognition  of  handwritten  whiteboard  notes.   
+In: Tenth  International Workshop on Frontiers in Handwriting Recognition,
+Suvisoft, 2006
+
+Jaeger, S. ; Manke, S. ; Waibel, A.: Npen++: An On-Line Handwriting Recognition System.  
+In: 7th International Workshop on Frontiers in Handwriting Recognition,
+2000, S.249–260
+"""
 
 def move_to_origin(traj):
     """
@@ -50,6 +61,7 @@ def correct_slant(traj):
     last_point = traj[0]
     angles = []
     for cur_point in traj[1:]:
+        # check for penup
         if last_point[2] == 1:
             # don't measure angles for "invisible" lines
             last_point = cur_point
@@ -61,6 +73,7 @@ def correct_slant(traj):
             angles.append(int(angle))
         last_point = cur_point
     # print("found {} angles for {} points".format(len(angles), len(traj)))
+    # we move angles from [-90,90] to [0, 180] for calculations
     angles = np.array(angles) + 90
     bins = np.bincount(angles, minlength=181)
     # weighting all angles with discrete standard gaussian distribution
@@ -70,6 +83,7 @@ def correct_slant(traj):
     # smoothing entries with neighbours, first and last points remain unchanged
     gauss = lambda p, c, n: 0.25 * p + 0.5 * c + 0.25 * n
     smoothed = [bins[0]] + [gauss(bins[i-1], bins[i], bins[i+1]) for i in range(len(bins)-1)] + [bins[len(bins)-1]]
+    # reverse interval shift
     slant = np.argmax(smoothed) - 90
     # print("slant is {}".format(slant))
     # print(len(smoothed))
