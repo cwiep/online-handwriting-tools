@@ -11,6 +11,8 @@ As of now, the following parameters of the processing pipeline can only be chang
 * online-handwritten features (see traj/trajfeat.py for documentation)
 * configuration of the spatial pyramid (see traj/spatialpyramid for documentation)
 
+The tool's output is written in numpy-text format and is either a sequence of feature vectors (one for each point of the given trajectory, one vector per line) or a bag-of-features representation of the trajectory (one bin-value per line).
+
 ## Dependencies
 * numpy
 * scipy
@@ -21,7 +23,6 @@ As of now, the following parameters of the processing pipeline can only be chang
 
 ## TODO
 * support for different choices of normalization steps and features
-* documentation for output format
 * ? supporting batch calculations for multiple trajectories ?
 
 ## Licence
