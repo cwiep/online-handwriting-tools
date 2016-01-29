@@ -15,7 +15,6 @@ from traj import spatialpyramid
 NORM_ARGS = ["flip", "slope", "resample", "slant", "height", "origin"]
 FEAT_ARGS = ["dir", "curv", "vic_aspect", "vic_curl", "vic_line", "vic_slope", "bitmap"]
 SPATIAL_PYRAMID_LEVELCONF = [[6, 2], [3, 2]]
-NUM_CLUSTERS = 128
 
 
 def process_single_file(filename, outfilename, normalize=False, cluster_file=None):
@@ -33,13 +32,14 @@ def process_single_file(filename, outfilename, normalize=False, cluster_file=Non
     if cluster_file is not None:
         print("Reading cluster file...")
         clusters = trajimport.read_traj_clusters(cluster_file)
-        print("Read {} clusters.".format(len(clusters)))
+        num_clusters = len(clusters)
+        print("Read {} clusters.".format(num_clusters))
 
         print("Quantizing feature vectors. This may take some time...")
         labels, _ = vq.vq(feat_seq_mat, clusters)
 
         print("Calculating bag-of-features representation...")
-        spatial_pyramid = spatialpyramid.SpatialPyramid(SPATIAL_PYRAMID_LEVELCONF, NUM_CLUSTERS)
+        spatial_pyramid = spatialpyramid.SpatialPyramid(SPATIAL_PYRAMID_LEVELCONF, num_clusters)
         gen = boof.BoofGenerator(spatial_pyramid)
         bof = gen.build_feature_vector(traj[:, :2], labels)
         print("Calculated bag-of-feature representation of length {}".format(len(bof)))
