@@ -11,6 +11,13 @@ from traj import trajfeat
 from traj import boof
 from traj import spatialpyramid
 
+
+NORM_ARGS = ["flip", "slope", "resample", "slant", "height", "origin"]
+FEAT_ARGS = ["dir", "curv", "vic_aspect", "vic_curl", "vic_line", "vic_slope", "bitmap"]
+SPATIAL_PYRAMID_LEVELCONF = [[6, 2], [3, 2]]
+NUM_CLUSTERS = 128
+
+
 def process_single_file(filename, outfilename, normalize=False, cluster_file=None):
     print("Importing {}...".format(filename))
     traj, word = trajimport.read_trajectory_from_file(filename)
@@ -18,12 +25,10 @@ def process_single_file(filename, outfilename, normalize=False, cluster_file=Non
     
     if normalize:
         print("Normalizing trajectory...")
-        norm_args = ["flip", "slope", "resample", "slant", "height", "origin"]
-        traj = trajnorm.normalize_trajectory(traj, norm_args)
+        traj = trajnorm.normalize_trajectory(traj, NORM_ARGS)
 
     print("Calculating feature vector sequence...")
-    feat_args = ["dir", "curv", "vic_aspect", "vic_curl", "vic_line", "vic_slope", "bitmap"]
-    feat_seq_mat = trajfeat.calculate_feature_vector_sequence(traj, feat_args)
+    feat_seq_mat = trajfeat.calculate_feature_vector_sequence(traj, FEAT_ARGS)
 
     if cluster_file is not None:
         print("Reading cluster file...")
@@ -34,9 +39,7 @@ def process_single_file(filename, outfilename, normalize=False, cluster_file=Non
         labels, _ = vq.vq(feat_seq_mat, clusters)
 
         print("Calculating bag-of-features representation...")
-        levels = [[6, 2], [3, 2]]
-        num_clusters = 128
-        spatial_pyramid = spatialpyramid.SpatialPyramid(levels, num_clusters)
+        spatial_pyramid = spatialpyramid.SpatialPyramid(SPATIAL_PYRAMID_LEVELCONF, NUM_CLUSTERS)
         gen = boof.BoofGenerator(spatial_pyramid)
         bof = gen.build_feature_vector(traj[:, :2], labels)
         print("Calculated bag-of-feature representation of length {}".format(len(bof)))
@@ -46,6 +49,7 @@ def process_single_file(filename, outfilename, normalize=False, cluster_file=Non
         # otherwise we just save the feature vector sequence
         print("Writing {}...".format(outfilename))
         numpy.savetxt(outfilename, feat_seq_mat)
+
 
 def main(argv):
     parser = argparse.ArgumentParser(description="Calculate feature vector sequences or bag-of-features representations for a online-handwritten trajectory.")
