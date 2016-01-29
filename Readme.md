@@ -2,11 +2,12 @@
 
 Python library and tool for calculating bag-of-features representations for online-handwritten trajectories. This project was designed to work with the [Online-Handwritten George Washington Dataset]. See there for more information about the expected trajectory file format.
 
-Run
-```
-python tool.py
-```
-for basic usage.
+Run ```python tool.py``` for basic usage.
+
+As of now, the following parameters of the processing pipeline can only be changed in code (see tool.py):
+* normalization steps (see traj/trajnorm.py for documentation)
+* online-handwritten features (see traj/trajfeat.py for documentation)
+* configuration of the spatial pyramid (see traj/spatialpyramid for documentation)
 
 ## Dependencies
 * numpy
