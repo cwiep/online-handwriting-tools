@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 __author__ = 'chris'
 
 import math
