@@ -18,6 +18,36 @@ In: 7th International Workshop on Frontiers in Handwriting Recognition,
 2000, S.249–260
 """
 
+
+def normalize_trajectory(traj, args):
+    """
+    Applies given normalization steps in args to trajectory of points in traj.
+    Valid normalizations are "flip", "slope", "origin", "resample", "slant", "height",
+    "smooth" and "delayed". Note that with application of "delayed" there will be
+    two objects returned, the trajectory and the list of delayed strokes.
+
+    The object that "traj" points to WILL BE CHANGED!
+    """
+    if "flip" in args:
+        traj = flip_vertically(traj)
+    if "slope" in args:
+        traj = correct_slope(traj)
+    if "origin" in args:
+        traj = move_to_origin(traj)
+    if "resample" in args:
+        traj = resampling(traj)
+    if "slant" in args:
+        traj = correct_slant(traj)
+    if "height" in args:
+        traj = normalize_height(traj)
+    if "smooth" in args:
+        traj = smoothing(traj)
+    if "delayed" in args:
+        traj, delayed = remove_delayed_strokes(traj)
+        return traj, delayed
+    return traj
+    
+
 def move_to_origin(traj):
     """
     Move trajectory so that the lower left corner
@@ -177,33 +207,3 @@ def remove_delayed_strokes(traj):
         else:
             delayed.append(stroke)
     return np.array(new_traj), np.array(delayed)
-
-
-def normalize_trajectory(traj, args):
-    """
-    Applies given normalization steps in args to trajectory of points in traj.
-    Valid normalizations are "flip", "slope", "origin", "resample", "slant", "height",
-    "smooth" and "delayed". Note that with application of "delayed" there will be
-    two objects returned, the trajectory and the list of delayed strokes.
-
-    The object that "traj" points to WILL BE CHANGED!
-    """
-    if "flip" in args:
-        traj = flip_vertically(traj)
-    if "slope" in args:
-        traj = correct_slope(traj)
-    if "origin" in args:
-        traj = move_to_origin(traj)
-    if "resample" in args:
-        traj = resampling(traj)
-    if "slant" in args:
-        traj = correct_slant(traj)
-    if "height" in args:
-        traj = normalize_height(traj)
-    if "smooth" in args:
-        traj = smoothing(traj)
-    if "delayed" in args:
-        traj, delayed = remove_delayed_strokes(traj)
-        return traj, delayed
-    return traj
-
