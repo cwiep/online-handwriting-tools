@@ -2,7 +2,7 @@
 
 Python library and tool for calculating bag-of-features representations for online-handwritten trajectories. This project was designed to work with the [Online-Handwritten George Washington Dataset]. See there for more information about the expected trajectory file format.
 
-Run ```python tool.py``` for basic usage and 
+Run ```./tool.py``` for basic usage and 
 ```./tool.py exampledata/company_traj.txt out.txt -n -b exampledata/clusters.txt```
 for calculating a bof representation of the normalized example trajectory.
 
